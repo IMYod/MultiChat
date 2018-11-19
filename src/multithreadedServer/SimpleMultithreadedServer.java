@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Vector;
 
 public class SimpleMultithreadedServer implements Runnable{
 
@@ -32,11 +33,11 @@ public class SimpleMultithreadedServer implements Runnable{
 	ServerSocket serverSocket = null;  // Server socket that will listen for incoming connections
 	Thread       runningThread = null;
 	boolean      isStopped    = false;
-	private ArrayList<WorkerRunnable> workerList = new ArrayList<>();
+	private Vector<WorkerRunnable> workerList = new Vector<>();
 
 	public SimpleMultithreadedServer(int port){
 		this.serverPort = port;
-		workerList = new ArrayList<>();
+		workerList = new Vector<>();
 	}
 
 	public void run(){
@@ -92,7 +93,7 @@ public class SimpleMultithreadedServer implements Runnable{
 		}
 	}
 
-	public ArrayList<WorkerRunnable> getWorkerList() {
+	public Vector<WorkerRunnable> getWorkerList() {
 		return workerList;
 	}
 

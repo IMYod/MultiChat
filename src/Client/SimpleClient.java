@@ -19,35 +19,42 @@ import java.net.*;
 
 public class SimpleClient {
 
-	public static void main(String[] args) throws IOException, InterruptedException {
+	int port;
+	public Socket socket = null;       //Socket object for communicating
+	public PrintWriter out = null;    //socket output to server - for sending data through the socket to the server
+	public BufferedReader in = null;  //socket input from server - for reading server's response
+	public String name = null;
 
-		Socket socket = null;       //Socket object for communicating
-		PrintWriter out = null;    //socket output to server - for sending data through the socket to the server
-		BufferedReader in = null;  //socket input from server - for reading server's response
-		String name = null;
+	public SimpleClient() throws UnknownHostException, IOException, InterruptedException {
+		socket = new Socket("127.0.0.1", 45000);
+		name = randomName();//delete this on GUI!!!
+		connect();
+	}
+	
+	public SimpleClient(int _port, String host, String _name) throws UnknownHostException, IOException, InterruptedException {
+		socket = new Socket(host, port);   //establish the socket connection between the client and the server
+		name = _name;
+		connect();
+	}
 
-		name = randomName();//change it on GUI!!!
-		System.out.println("Mu name is: " + name);
-
+	public void connect() throws IOException, InterruptedException {
 		try {
-			socket = new Socket("127.0.0.1", 45000);   //establish the socket connection between the client and the server
+			
 			out = new PrintWriter(socket.getOutputStream(), true);  //open a PrintWriter on the socket
-			in = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));  //open a BufferedReader on the socket
+			out.println("name>>>" + name);
+			startMessageReader();
 			
 			System.out.println("Enter your message, to end write stop");
-			
+
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(System.in)); //for reading user input (line at a time from the standard input stream)
-			
-			String userInput = "name>>>" + name;
-			
-			do { //first of all send the name
+
+			String userInput = "";
+			while ((userInput = ) != null) {
 				out.println(userInput);     //sends to the server immediately
-				System.out.println(in.readLine());  // waits until the server sends back data,reads and prints it
 				if (userInput.equals("stop"))
 					break;
-			} while ((userInput = br.readLine()) != null);
+			}
 
 			System.out.println("CLIENT: I LEAVED");
 
@@ -68,11 +75,29 @@ public class SimpleClient {
 
 	}
 
-	public static String randomName() { //temp function!!!
+	private void startMessageReader() {
+		ThreadSocket t = new ThreadSocket(socket);
+		t.start();
+	}
+
+	public static String randomName() { //delete it when you connect to GUI!!!!
 		String randName = "";
 		do {
 			randName += (char)((int)(Math.random()*26)+65);
 		}while (Math.random() > 0.3);
 		return randName;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			SimpleClient client1 = new SimpleClient();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}		
+		
 	}
 }
