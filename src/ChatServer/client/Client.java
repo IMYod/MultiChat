@@ -14,6 +14,7 @@ public class Client {
     private String serverHost;
     private int serverPort;
     private Scanner userInputScanner;
+    public static chatgui =null;
 
     public static void main(String[] args)
     {

@@ -1,3 +1,5 @@
+package ChatServer.client;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -23,18 +25,19 @@ import java.awt.event.MouseEvent;
 public class chatgui extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtName;
-	private JTextField textField;
+	public JTextField txtName;
+	public JTextField textaddress;
 	private ServerThread serverThread;
-
+	private JTextArea textAreaSend;
+	private Client client;
 	/**
 	 * Launch the application.
 	 */
-	public chatgui (ServerThread _serverThread) {
+	public chatgui (Client c) {
 		super();
-		serverThread = _serverThread;
+		this.client = c;
 	}
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -65,6 +68,9 @@ public class chatgui extends JFrame {
 		contentPane.add(txtName);
 		txtName.setColumns(10);
 		
+			
+		
+		
 		JTextArea textArea = new JTextArea();
 		textArea.setForeground(Color.BLACK);
 		textArea.setBackground(Color.WHITE);
@@ -75,6 +81,13 @@ public class chatgui extends JFrame {
 		btSend.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btSend.setBounds(627, 487, 113, 36);
 		contentPane.add(btSend);
+		btSend.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			 textArea.setText(textAreaSend.getText());
+			}
+		});
 		
 		JTextArea textAreaSend = new JTextArea();
 		textAreaSend.setBounds(59, 487, 558, 25);
@@ -85,16 +98,17 @@ public class chatgui extends JFrame {
 		btnClear.setBounds(485, 11, 103, 36);
 		contentPane.add(btnClear);
 		
+		
 		JLabel lblName = new JLabel("Name");
 		lblName.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblName.setBounds(10, 11, 74, 22);
 		contentPane.add(lblName);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textField.setColumns(10);
-		textField.setBounds(297, 11, 129, 22);
-		contentPane.add(textField);
+		textaddress = new JTextField();
+		textaddress.setFont(new Font("Tahoma", Font.BOLD, 14));
+		textaddress.setColumns(10);
+		textaddress.setBounds(297, 11, 129, 22);
+		contentPane.add(textaddress);
 		
 		JLabel lbAddress = new JLabel("Address");
 		lbAddress.setFont(new Font("Tahoma", Font.BOLD, 16));
